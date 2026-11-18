@@ -1,11 +1,25 @@
-#pragma once
+#ifndef CORE_H
+#define CORE_H
+
 #include <stdint.h>
 
+// Добавляем макрос для экспорта функции в DLL
+#if defined(_WIN32)
+    #define CORE_API __declspec(dllexport)
+#else
+    #define CORE_API
+#endif
+
+#define CORE_HOST_MAX 256
+
 struct core_info {
-    uint32_t process_id;
-    uint32_t processors_count;
-    uint32_t page_size;
-    char computer_name[256];
+    int64_t pid;
+    int32_t cpus;
+    int32_t page_size;
+    char    host[CORE_HOST_MAX];
 };
 
-int core_get_info(struct core_info *info);
+// Добавляем CORE_API перед объявлением функции
+CORE_API int core_get_info(struct core_info *out);
+
+#endif
